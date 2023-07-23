@@ -1,0 +1,63 @@
+
+.card {
+  height: 224px;
+  width: 224px;
+  border-radius: 8px;
+  border: 2px solid #606060;
+  display: inline-block;
+  position: relative;
+  background-color: #1B1B1B;
+  cursor: pointer;
+
+}
+
+.card:active {
+  background-color: #3e8e41;
+  box-shadow: 0 4px #ffffff;
+  transform: translateY(4px);
+}
+
+
+.card > img:hover {
+  box-shadow: 0px 0px 12px 8px rgba(203, 215, 54, 1);
+  transition-duration: 0.4s;
+
+}
+
+.card > img {
+  height: 224px;
+  width: 224px;
+  border: 2px solid #606060;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.card-description {
+  height: 54px;
+  width: 224px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  position: absolute;
+  top: 170px;
+  backdrop-filter: blur(5px);
+  background-color: rgba(27, 27, 27, 0.8);
+  border-radius: px;
+  padding-left: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.name{
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.species{
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 400;
+}
+
