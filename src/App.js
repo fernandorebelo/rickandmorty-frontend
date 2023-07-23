@@ -54,7 +54,7 @@ function App() {
         <img src={logo} alt="" />
       </div>
       <div className="input-button">
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit} className="form">
           <input
             type="text"
             value={inputValue}
