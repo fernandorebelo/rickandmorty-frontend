@@ -45,14 +45,14 @@ body {
 
 
 
-.input-button {
+.container-form {
   display: flex;
   justify-content: center;
   margin-top: 74px;
   margin-bottom: 101px;
 }
 
-.form > button {
+button.font-face-nunito {
   margin-left: 16px;
 }
 
@@ -70,7 +70,7 @@ input {
 
 }
 
-button {
+.form > button {
   height: 42px;
   width: 84px;
   border-radius: 8px;
@@ -84,31 +84,14 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.form > button:hover {
   background-color: #64ac67; /* Green */
   color: white;
 }
 
-button:active {
+.form > button:active {
   background-color: #3e8e41;
   box-shadow: 0 4px #ffffff;
   transform: translateY(4px);
 }
 
-.pagination-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.pagination-buttons button {
-  margin: 0 5px;
-  cursor: pointer;
-}
-
-.pagination-buttons button.active {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-}

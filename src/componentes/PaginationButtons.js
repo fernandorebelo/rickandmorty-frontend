@@ -1,32 +1,25 @@
 import React from 'react'
 import '../componentes/PaginationButton.css'
-import App from '../App'
+import vector from '../assets/Vector 2.svg'
 
-const PaginationButtons = ({ currentPage, totalPages }) => {
+function PaginationButtons({ currentPage, totalPages, onPrevious, onNext }) {
   return (
     <div className="pagination-buttons">
       <button
-        onClick={() => App.handlePageChange({ currentPage } - 1)}
+        className="font-face-nunito"
+        onClick={onPrevious}
         disabled={currentPage === 1}
+        id="previous-button"
       >
-        &lt;
+        <img src={vector} alt="" />
       </button>
-      {Array.from({ length: { totalPages } }, (_, i) => i + 1).map(
-        pageNumber => (
-          <button
-            key={pageNumber}
-            onClick={() => App.handlePageChange(pageNumber)}
-            className={pageNumber === currentPage ? 'active' : ''}
-          >
-            {pageNumber}
-          </button>
-        )
-      )}
       <button
-        onClick={() => App.handlePageChange(currentPage + 1)}
-        disabled={currentPage === { totalPages }}
+        className="font-face-nunito"
+        onClick={onNext}
+        disabled={currentPage === totalPages}
+        id="next-button"
       >
-        &gt;
+        <img src={vector} alt="" />
       </button>
     </div>
   )

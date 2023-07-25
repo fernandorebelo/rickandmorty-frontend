@@ -1,7 +1,7 @@
 import React from 'react'
 import '../componentes/Card.css'
 
-const Card = ({ image, name, species }) => {
+const Card = ({ id, image, name, species }) => {
   return (
     <div className="card">
       <img src={image} alt={name} />

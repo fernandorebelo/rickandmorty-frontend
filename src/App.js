@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './App.css'
 import logo from './assets/header-rickandmorty.png'
@@ -11,6 +11,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [initialSearchPerformed, setInitialSearchPerformed] = useState(false)
 
   const handleInputChange = e => {
     setInputValue(e.target.value)
@@ -18,7 +19,7 @@ function App() {
 
   const handleFormSubmit = e => {
     e.preventDefault()
-    fetchData()
+    fetchInitialData()
   }
 
   const handlePageChange = pageNumber => {
@@ -27,9 +28,21 @@ function App() {
     }
   }
 
-  const fetchData = () => {
+  const handlePreviousPage = e => {
+    handlePageChange(currentPage - 1)
+    fetchPaginationData(currentPage - 1)
+    setInitialSearchPerformed(true) // Mark the initial search as performed
+  }
+
+  const handleNextPage = e => {
+    handlePageChange(currentPage + 1)
+    fetchPaginationData(currentPage + 1)
+    setInitialSearchPerformed(true) // Mark the initial search as performed
+  }
+
+  const fetchInitialData = () => {
     setIsLoading(true)
-    fetch(`http://127.0.0.1:5000/character?name=${inputValue}`)
+    fetch(`http://127.0.0.1:5000/character?name=${inputValue}&page=1`) // Always fetch the first page for the initial search
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -48,12 +61,42 @@ function App() {
       })
   }
 
+  const fetchPaginationData = pageNumber => {
+    setIsLoading(true)
+    fetch(
+      `http://127.0.0.1:5000/character?name=${inputValue}&page=${pageNumber}`
+    )
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
+      })
+      .then(data => {
+        setCharacters(data.results)
+        setCurrentPage(data.page)
+        setIsLoading(false)
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error)
+        setIsLoading(false)
+      })
+  }
+
+  useEffect(() => {
+    // Scroll to the bottom only after the initial search is performed
+    if (initialSearchPerformed) {
+      window.scrollTo(0, document.body.scrollHeight)
+    }
+  }, [characters, initialSearchPerformed]) // Run this effect whenever 'characters' or 'initialSearchPerformed' state changes
+
   return (
     <div className="container">
       <div className="logo">
         <img src={logo} alt="" />
       </div>
-      <div className="input-button">
+
+      <div className="container-form">
         <form onSubmit={handleFormSubmit} className="form">
           <input
             type="text"
@@ -67,43 +110,28 @@ function App() {
           </button>
         </form>
       </div>
+
       {isLoading ? (
         <div>Loading...</div>
       ) : (
         <div className="pagination">
           {characters.map(characters => (
             <Card
+              key={characters.id}
               image={characters.image}
               name={characters.name}
               species={characters.species}
             />
           ))}
-          <div className="pagination-buttons">
-            <button
-              onClick={() => handlePageChange({ currentPage } - 1)}
-              disabled={currentPage === 1}
-            >
-              &lt;
-            </button>
-            {Array.from({ length: { totalPages } }, (_, i) => i + 1).map(
-              pageNumber => (
-                <button
-                  key={pageNumber}
-                  onClick={() => handlePageChange(pageNumber)}
-                  className={pageNumber === currentPage ? 'active' : ''}
-                >
-                  {pageNumber}
-                </button>
-              )
-            )}
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === { totalPages }}
-            >
-              &gt;
-            </button>
-          </div>
         </div>
+      )}
+      {characters.length > 0 && ( // Conditionally render PaginationButtons when characters exist
+        <PaginationButtons
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPrevious={handlePreviousPage}
+          onNext={handleNextPage}
+        />
       )}
     </div>
   )

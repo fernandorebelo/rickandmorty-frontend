@@ -1,17 +1,35 @@
 .pagination-buttons {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+  padding-top: 100px;
+  padding-bottom: 200px;
 }
 
-.pagination-buttons button {
-  margin: 0 5px;
+.pagination-buttons > button {
   cursor: pointer;
+  background-color: transparent;
 }
 
-.pagination-buttons button.active {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
+
+
+#next-button {
+  width: 9px;
+  height: 19px;
+  filter: grayscale(100%);
+}
+
+#next-button:disabled{
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+#previous-button{
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  
+}
+
+#previous-button:disabled{
+  pointer-events: none;
+  opacity: 0.5;
 }
