@@ -4,6 +4,7 @@ import './App.css'
 import logo from './assets/header-rickandmorty.png'
 import Card from './componentes/Card'
 import PaginationButtons from './componentes/PaginationButtons'
+import Modal from './componentes/Modal'
 
 function App() {
   const [inputValue, setInputValue] = useState('')
@@ -12,6 +13,11 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [initialSearchPerformed, setInitialSearchPerformed] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
 
   const handleInputChange = e => {
     setInputValue(e.target.value)
