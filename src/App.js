@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import './App.css'
 import logo from './assets/header-rickandmorty.png'
 import Card from './componentes/Card'
 import PaginationButtons from './componentes/PaginationButtons'
-import Modal from './componentes/Modal'
+import Modal from 'react-modal'
+import ModalPage from './componentes/ModalPage'
+
+Modal.setAppElement('#root')
 
 function App() {
   const [inputValue, setInputValue] = useState('')
@@ -13,10 +15,17 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [initialSearchPerformed, setInitialSearchPerformed] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [selectedCharacter, setSelectedCharacter] = useState(null)
 
-  const openModal = () => {
-    setIsModalOpen(true)
+  const openModal = characterInfo => {
+    setSelectedCharacter(characterInfo)
+    /* fetchCharacterData(selectedCharacter) */
+    setModalIsOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalIsOpen(false)
   }
 
   const handleInputChange = e => {
@@ -48,7 +57,7 @@ function App() {
 
   const fetchInitialData = () => {
     setIsLoading(true)
-    fetch(`http://127.0.0.1:5000/character?name=${inputValue}&page=1`) // Always fetch the first page for the initial search
+    fetch(`http://127.0.0.1:5000/character?name=${inputValue}&page=1`) // Fetch the first page for the initial search
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -90,11 +99,10 @@ function App() {
   }
 
   useEffect(() => {
-    // Scroll to the bottom only after the initial search is performed
     if (initialSearchPerformed) {
       window.scrollTo(0, document.body.scrollHeight)
     }
-  }, [characters, initialSearchPerformed]) // Run this effect whenever 'characters' or 'initialSearchPerformed' state changes
+  }, [characters, initialSearchPerformed])
 
   return (
     <div className="container">
@@ -102,6 +110,7 @@ function App() {
         <img src={logo} alt="" />
       </div>
 
+      {/*Form input text and submit*/}
       <div className="container-form">
         <form onSubmit={handleFormSubmit} className="form">
           <input
@@ -117,6 +126,28 @@ function App() {
         </form>
       </div>
 
+      {/*Modal page*/}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        <button onClick={closeModal}>Fechar</button>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          selectedCharacter && (
+            <ModalPage
+              key={selectedCharacter.id}
+              image={selectedCharacter.image}
+              name={selectedCharacter.name}
+              species={selectedCharacter.species}
+            />
+          )
+        )}
+      </Modal>
+
+      {/*Cards pagination*/}
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -124,14 +155,18 @@ function App() {
           {characters.map(characters => (
             <Card
               key={characters.id}
+              id={characters.id}
               image={characters.image}
               name={characters.name}
               species={characters.species}
+              onClick={openModal}
             />
           ))}
         </div>
       )}
-      {characters.length > 0 && ( // Conditionally render PaginationButtons when characters exist
+
+      {/*Pagination buttons*/}
+      {characters.length > 0 && (
         <PaginationButtons
           currentPage={currentPage}
           totalPages={totalPages}
