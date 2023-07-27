@@ -1,9 +1,19 @@
 import React from 'react'
 import '../componentes/Card.css'
 
-const Card = ({ id, image, name, species, onClick }) => {
+const Card = ({
+  id,
+  image,
+  name,
+  species,
+  status,
+  gender,
+  location,
+  origin,
+  onClick
+}) => {
   const handleClick = () => {
-    onClick({ id, image, name, species })
+    onClick({ id, image, name, species, status, gender, location, origin })
   }
   return (
     <div>

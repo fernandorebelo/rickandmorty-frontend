@@ -20,7 +20,7 @@ function App() {
 
   const openModal = characterInfo => {
     setSelectedCharacter(characterInfo)
-    /* fetchCharacterData(selectedCharacter) */
+    console.log(characterInfo)
     setModalIsOpen(true)
   }
 
@@ -132,7 +132,6 @@ function App() {
         onRequestClose={closeModal}
         contentLabel="Example Modal"
       >
-        <button onClick={closeModal}>Fechar</button>
         {isLoading ? (
           <div>Loading...</div>
         ) : (
@@ -142,6 +141,11 @@ function App() {
               image={selectedCharacter.image}
               name={selectedCharacter.name}
               species={selectedCharacter.species}
+              status={selectedCharacter.status}
+              gender={selectedCharacter.gender}
+              location={selectedCharacter.location}
+              origin={selectedCharacter.origin}
+              close={closeModal}
             />
           )
         )}
@@ -159,6 +163,10 @@ function App() {
               image={characters.image}
               name={characters.name}
               species={characters.species}
+              status={characters.status}
+              gender={characters.gender}
+              location={characters.location_name}
+              origin={characters.origin_name}
               onClick={openModal}
             />
           ))}

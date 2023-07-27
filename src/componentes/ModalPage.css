@@ -1,4 +1,139 @@
 
-.modal{
-  
+
+.blur-background > img{
+  filter: blur(10px);
+  position: absolute;
+  width: 400px;
+}
+.container-modal{
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  max-width: 1000px;
+  height: 85vh;
+  background-color: transparent;
+  border: 1px solid red;
+}
+
+.modal-close-button{
+  display: flex;
+  justify-content: center;
+  width: 84px;
+  height: 42px;
+  border-radius: 8px;
+  border: 2px solid #FFF;
+  cursor: pointer;
+
+}
+
+.modal-close-button > button{
+  background-color: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+
+.modal-card {
+  width: 400px;
+  height: 600px;
+  border-radius: 8px;
+  border: 2px solid #606060;
+  display: inline-block;
+  z-index: 1;
+  margin-left: -50px;
+}
+
+.modal-card > img {
+  width: 400px;
+  height: 600px;
+  border: 2px solid #606060;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.modal-card-description {
+  height: 54px;
+  width: 400px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  position: absolute;
+  top: 609px;
+  backdrop-filter: blur(5px);
+  background-color: rgba(27, 27, 27, 0.8);
+  padding-left: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-card-name{
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.modal-card-species{
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.container-info {
+  height: 85vh;
+  width: 600px;
+  position: absolute;
+  margin-left: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  background-color: #000000;
+}
+
+.container-info-text{
+  margin: 50px;
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.modal-title{
+  color: #CBD736;
+  font-family: Nunito;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 8.45px;
+  padding-bottom: 17px;
+}
+
+.modal-subtitle{
+  color: #8C8C8C;
+  font-family: Nunito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.modal-text{
+  color: #D3D3D3;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.modal-text-big{
+  color: #FFF;
+  font-family: Nunito;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.modal-space{
+  padding-bottom: 60px;
 }
