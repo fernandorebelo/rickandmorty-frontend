@@ -76,10 +76,12 @@ function App() {
       })
   }
 
-  const fetchPaginationData = pageNumber => {
+  const fetchPaginationData = (_, pageNumber) => {
     setIsLoading(true)
     fetch(
-      `http://127.0.0.1:5000/character?name=${inputValue}&page=${pageNumber}`
+      `http://127.0.0.1:5000/character?name=${encodeURIComponent(
+        inputValue
+      )}&page=${encodeURIComponent(pageNumber || 1)}`
     )
       .then(response => {
         if (!response.ok) {
@@ -89,8 +91,11 @@ function App() {
       })
       .then(data => {
         setCharacters(data.results)
-        setCurrentPage(data.page)
+        setCurrentPage(pageNumber || 1)
+        setTotalPages(data.total_pages)
         setIsLoading(false)
+        console.log('Actual page:', data.page)
+        console.log('Total pages: ', data.total_pages)
       })
       .catch(error => {
         console.error('Error fetching data:', error)
@@ -180,6 +185,7 @@ function App() {
           totalPages={totalPages}
           onPrevious={handlePreviousPage}
           onNext={handleNextPage}
+          fetchPaginationData={fetchPaginationData}
         />
       )}
     </div>
