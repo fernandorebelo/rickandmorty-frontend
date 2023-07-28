@@ -17,7 +17,10 @@ const Card = ({
   }
   return (
     <div>
-      <button className="card" onClick={handleClick}>
+      <button
+        className={`card ${status === 'Dead' ? 'Dead' : ''}`}
+        onClick={handleClick}
+      >
         <img src={image} alt={name} />
         <div className="card-description">
           <p className="name">{name}</p>

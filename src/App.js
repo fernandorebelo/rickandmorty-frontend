@@ -3,10 +3,8 @@ import './App.css'
 import logo from './assets/header-rickandmorty.png'
 import Card from './componentes/Card'
 import PaginationButtons from './componentes/PaginationButtons'
-import Modal from 'react-modal'
 import ModalPage from './componentes/ModalPage'
-
-Modal.setAppElement('#root')
+import Loading from './componentes/Loading'
 
 function App() {
   const [inputValue, setInputValue] = useState('')
@@ -15,17 +13,15 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [initialSearchPerformed, setInitialSearchPerformed] = useState(false)
-  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedCharacter, setSelectedCharacter] = useState(null)
 
   const openModal = characterInfo => {
     setSelectedCharacter(characterInfo)
     console.log(characterInfo)
-    setModalIsOpen(true)
   }
 
   const closeModal = () => {
-    setModalIsOpen(false)
+    setSelectedCharacter(null)
   }
 
   const handleInputChange = e => {
@@ -131,34 +127,23 @@ function App() {
         </form>
       </div>
 
-      {/*Modal page*/}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
-      >
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          selectedCharacter && (
-            <ModalPage
-              key={selectedCharacter.id}
-              image={selectedCharacter.image}
-              name={selectedCharacter.name}
-              species={selectedCharacter.species}
-              status={selectedCharacter.status}
-              gender={selectedCharacter.gender}
-              location={selectedCharacter.location}
-              origin={selectedCharacter.origin}
-              close={closeModal}
-            />
-          )
-        )}
-      </Modal>
+      {selectedCharacter && (
+        <ModalPage
+          key={selectedCharacter.id}
+          image={selectedCharacter.image}
+          name={selectedCharacter.name}
+          species={selectedCharacter.species}
+          status={selectedCharacter.status}
+          gender={selectedCharacter.gender}
+          location={selectedCharacter.location}
+          origin={selectedCharacter.origin}
+          close={closeModal}
+        />
+      )}
 
       {/*Cards pagination*/}
       {isLoading ? (
-        <div>Loading...</div>
+        <Loading />
       ) : (
         <div className="pagination">
           {characters.map(characters => (

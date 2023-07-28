@@ -8,7 +8,10 @@
   position: relative;
   background-color: #1B1B1B;
   cursor: pointer;
+}
 
+.card.Dead{
+  filter: grayscale(100%);
 }
 
 .card:active {

@@ -4,7 +4,6 @@
   border: 0;
   box-sizing: border-box;
   font-family: nunito, sans-serif;
-  
 }
 
 @font-face {
@@ -95,3 +94,6 @@ input {
   transform: translateY(4px);
 }
 
+.modal-page{
+  margin-top: 50px;
+}
