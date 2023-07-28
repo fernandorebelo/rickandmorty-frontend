@@ -44,10 +44,8 @@
   position: absolute;
   top: 18px;
   overflow: hidden;
-}
-
-.imagem-blur > img.imagem.Dead{
-  filter: blur(30px) brightness(0.6) grayscale(100%);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 .imagem-blur > img{

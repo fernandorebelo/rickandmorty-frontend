@@ -1,7 +1,7 @@
 
 .card {
-  height: 224px;
-  width: 224px;
+  height: 226px;
+  width: 226px;
   border-radius: 8px;
   border: 2px solid #606060;
   display: inline-block;
@@ -21,11 +21,10 @@
 }
 
 
-.card:hover {
-  box-shadow: 0px 0px 12px 8px rgba(203, 215, 54, 1);
+/* .card:hover {
+  box-shadow: 0px 6px 7px 0px rgba(203, 215, 54, 0.25);
   transition-duration: 0.4s;
-
-}
+} */
 
 .card > img {
   height: 224px;
@@ -33,6 +32,12 @@
   border: 2px solid #606060;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.card:hover {
+  border: 2px solid #CBD736;
+  box-shadow: 0px 6px 7px 0px rgba(203, 215, 54, 0.25);
+  transition-duration: 0.4s;
 }
 
 .card-description {
@@ -53,6 +58,7 @@
   justify-content: center;
   align-items: start;
 }
+
 
 .name{
   color: #FFF;

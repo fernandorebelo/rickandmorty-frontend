@@ -8,6 +8,23 @@ const Loading = () => {
       <div className="loading-image">
         <img src={LoadingImage} alt="Loading" />
       </div>
+      <div className="loading-text">
+        {/* <p className="font-face-nunito">Loading...</p> */}
+        <div class="lds-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
     </div>
   )
 }

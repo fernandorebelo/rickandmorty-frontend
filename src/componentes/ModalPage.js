@@ -16,21 +16,13 @@ const ModalPage = ({
     <div className="modal-overlay">
       <div className="container-modal">
         <div className="imagem-blur">
-          <img
-            src={image}
-            alt={name}
-            className={`imagem ${status === 'Dead' ? 'Dead' : ''}`}
-          />
+          <img src={image} alt={name} />
         </div>
         <div className="modal-close-button">
           <button onClick={close}>Fechar</button>
         </div>
         <div className="modal-card">
-          <img
-            src={image}
-            alt={name}
-            className={`modal ${status === 'Dead' ? 'Dead' : ''}`}
-          />
+          <img src={image} alt={name} />
           <div className="modal-card-description">
             <p className="modal-card-name">{name}</p>
             <p className="modal-card-species">{species}</p>
