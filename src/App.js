@@ -18,18 +18,30 @@ function App() {
   const [initialSearchPerformed, setInitialSearchPerformed] = useState(false)
   const [selectedCharacter, setSelectedCharacter] = useState(null)
   const [user, setUser] = useState({})
+  const [userSet, setUserSet] = useState(false) // Flag to track if the user has been set
 
   const navigate = useNavigate()
 
-  onAuthStateChanged(auth, currentUser => {
-    setUser(currentUser)
-  })
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, currentUser => {
+      if (currentUser && !userSet) {
+        // User is logged in and user has not been set yet
+        setUser(currentUser)
+        setUserSet(true) // Set the flag to true to prevent further setting of the user
+      }
+    })
+
+    return () => {
+      // Unsubscribe when the component unmounts
+      unsubscribe()
+    }
+  }, [userSet])
 
   const logout = async () => {
     await signOut(auth)
     navigate('login')
   }
-
   const openModal = characterInfo => {
     setSelectedCharacter(characterInfo)
     console.log(characterInfo)
@@ -123,7 +135,7 @@ function App() {
   return (
     <div className="container">
       <div className="user">
-        User logged In: {user?.email}
+        User logged In: {user.email}
         <button onClick={logout}>Logout</button>
       </div>
       <div className="logo">
