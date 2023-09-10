@@ -5,6 +5,9 @@ import Card from './componentes/Card'
 import PaginationButtons from './componentes/PaginationButtons'
 import ModalPage from './componentes/ModalPage'
 import Loading from './componentes/Loading'
+import { auth } from './componentes/Auth/firebase-config'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
   const [inputValue, setInputValue] = useState('')
@@ -14,6 +17,18 @@ function App() {
   const [totalPages, setTotalPages] = useState(1)
   const [initialSearchPerformed, setInitialSearchPerformed] = useState(false)
   const [selectedCharacter, setSelectedCharacter] = useState(null)
+  const [user, setUser] = useState({})
+
+  const navigate = useNavigate()
+
+  onAuthStateChanged(auth, currentUser => {
+    setUser(currentUser)
+  })
+
+  const logout = async () => {
+    await signOut(auth)
+    navigate('login')
+  }
 
   const openModal = characterInfo => {
     setSelectedCharacter(characterInfo)
@@ -107,6 +122,10 @@ function App() {
 
   return (
     <div className="container">
+      <div className="user">
+        User logged In: {user?.email}
+        <button onClick={logout}>Logout</button>
+      </div>
       <div className="logo">
         <img src={logo} alt="" />
       </div>

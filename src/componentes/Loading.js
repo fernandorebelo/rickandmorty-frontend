@@ -10,7 +10,7 @@ const Loading = () => {
       </div>
       <div className="loading-text">
         {/* <p className="font-face-nunito">Loading...</p> */}
-        <div class="lds-spinner">
+        <div className="lds-spinner">
           <div></div>
           <div></div>
           <div></div>
