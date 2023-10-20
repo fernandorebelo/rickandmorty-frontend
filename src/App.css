@@ -98,6 +98,30 @@ input {
   margin-top: 50px;
 }
 
+.user{
+  background-color: whitesmoke;
+  padding: 10px;
+}
+
+.user > button{
+  padding: 5px;
+  background-color: gray;
+  color: whitesmoke;
+  margin-left: 10px;
+}
+
+.user > button:hover {
+  background-color: #64ac67;
+  color: white;
+}
+
+.user > button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 4px #ffffff;
+  transform: translateY(2px);
+}
+
+
 /* Extra small devices (phones, 768px and down) */
 @media only screen and (max-width: 768px) {
   .logo > img{

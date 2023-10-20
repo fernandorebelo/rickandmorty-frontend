@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import './App.css'
 import logo from './assets/header-rickandmorty.png'
 import Card from './componentes/Card'
 import PaginationButtons from './componentes/PaginationButtons'
 import ModalPage from './componentes/ModalPage'
 import Loading from './componentes/Loading'
+import { auth } from './componentes/Auth/firebase-config'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 function App() {
   const [inputValue, setInputValue] = useState('')
@@ -14,7 +17,33 @@ function App() {
   const [totalPages, setTotalPages] = useState(1)
   const [initialSearchPerformed, setInitialSearchPerformed] = useState(false)
   const [selectedCharacter, setSelectedCharacter] = useState(null)
+  const [user, setUser] = useState({})
+  const [userSet, setUserSet] = useState(false) // Flag to track if the user has been set
 
+  const location = useLocation()
+  const { userData } = location.state || {}
+
+  const navigate = useNavigate()
+
+  // Listen for authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, currentUser => {
+      if (currentUser && !userSet) {
+        // User is logged in and user has not been set yet
+        setUser(currentUser)
+        setUserSet(true) // Set the flag to true to prevent further setting of the user
+      }
+    })
+    return () => {
+      // Unsubscribe when the component unmounts
+      unsubscribe()
+    }
+  }, [userSet])
+
+  const logout = async () => {
+    await signOut(auth)
+    navigate('/login')
+  }
   const openModal = characterInfo => {
     setSelectedCharacter(characterInfo)
     console.log(characterInfo)
@@ -53,7 +82,9 @@ function App() {
 
   const fetchInitialData = () => {
     setIsLoading(true)
-    fetch(`http://127.0.0.1:5000/character?name=${inputValue}&page=1`) // Fetch the first page for the initial search
+    fetch(
+      `https://rickandmorty-backend-rtvb.onrender.com/character?name=${inputValue}&page=1`
+    ) // Fetch the first page for the initial search
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -75,7 +106,7 @@ function App() {
   const fetchPaginationData = (_, pageNumber) => {
     setIsLoading(true)
     fetch(
-      `http://127.0.0.1:5000/character?name=${encodeURIComponent(
+      `https://rickandmorty-backend-rtvb.onrender.com/character?name=${encodeURIComponent(
         inputValue
       )}&page=${encodeURIComponent(pageNumber || 1)}`
     )
@@ -105,8 +136,14 @@ function App() {
     }
   }, [characters, initialSearchPerformed])
 
+  console.log(userData)
+
   return (
     <div className="container">
+      <div className="user">
+        User logged In: {user.email}
+        <button onClick={logout}>Logout</button>
+      </div>
       <div className="logo">
         <img src={logo} alt="" />
       </div>
