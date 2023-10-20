@@ -6,16 +6,20 @@ import {
 } from 'firebase/auth'
 import { auth } from './firebase-config'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function Login() {
   const [registerEmail, setRegisterEmail] = useState('')
   const [registerPassword, setRegisterPassword] = useState('')
+  const [registerFirstName, setRegisterFirstName] = useState('')
+  const [registerLastName, setRegisterLastName] = useState('')
   const [loginEmail, setLoginEmail] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
   const [registrationError, setRegistrationError] = useState(null) // State for registration error
   const [loginError, setLoginError] = useState(null)
   const [showRegistrationError, setShowRegistrationError] = useState(false)
   const [showLoginError, setShowLoginError] = useState(false)
+  const [userData, setUserData] = useState(null)
 
   const navigate = useNavigate()
 
@@ -36,7 +40,23 @@ function Login() {
         // Signed in
         const user = userCredential.user
         console.log(user)
-        navigate('/')
+        console.log(user.uid)
+
+        axios
+          .get(
+            `https://rickandmorty-backend-rtvb.onrender.com/auth/user?uid=${user.uid}`
+          )
+          .then(response => {
+            const userDatabase = response.data.data.result
+            setUserData(userDatabase) // Store the user data in state
+            localStorage.setItem('user', JSON.stringify(userDatabase))
+          })
+          .catch(error => {
+            // Handle Axios GET request error
+            console.error(error)
+          })
+        console.log(userData)
+        navigate('/', { state: { userData } })
       })
       .catch(error => {
         const errorCode = error.code
@@ -62,6 +82,26 @@ function Login() {
         // Signed in
         const user = userCredential.user
         console.log(user)
+
+        const data = {
+          uid: user.uid,
+          first_name: registerFirstName,
+          last_name: registerLastName,
+          email: registerEmail
+        }
+
+        axios
+          .post(
+            'https://rickandmorty-backend-rtvb.onrender.com/auth/register',
+            data
+          )
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.error(error)
+          })
+
         navigate('/')
       })
       .catch(error => {
@@ -114,6 +154,28 @@ function Login() {
       </form>
       <form method="post" className="form">
         <h1>Create account</h1>
+        <div>
+          <input
+            type="text"
+            name="first_name"
+            required
+            onChange={event => {
+              setRegisterFirstName(event.target.value)
+            }}
+          />
+          <label htmlFor="first_name">First name</label>
+        </div>
+        <div>
+          <input
+            type="text"
+            name="last_name"
+            required
+            onChange={event => {
+              setRegisterLastName(event.target.value)
+            }}
+          />
+          <label htmlFor="last_name">Last name</label>
+        </div>
         <div>
           <input
             type="email"

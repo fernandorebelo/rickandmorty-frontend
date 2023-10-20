@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import './App.css'
 import logo from './assets/header-rickandmorty.png'
 import Card from './componentes/Card'
@@ -7,7 +7,7 @@ import ModalPage from './componentes/ModalPage'
 import Loading from './componentes/Loading'
 import { auth } from './componentes/Auth/firebase-config'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 function App() {
   const [inputValue, setInputValue] = useState('')
@@ -20,6 +20,9 @@ function App() {
   const [user, setUser] = useState({})
   const [userSet, setUserSet] = useState(false) // Flag to track if the user has been set
 
+  const location = useLocation()
+  const { userData } = location.state || {}
+
   const navigate = useNavigate()
 
   // Listen for authentication state changes
@@ -31,7 +34,6 @@ function App() {
         setUserSet(true) // Set the flag to true to prevent further setting of the user
       }
     })
-
     return () => {
       // Unsubscribe when the component unmounts
       unsubscribe()
@@ -40,7 +42,7 @@ function App() {
 
   const logout = async () => {
     await signOut(auth)
-    navigate('login')
+    navigate('/login')
   }
   const openModal = characterInfo => {
     setSelectedCharacter(characterInfo)
@@ -80,7 +82,9 @@ function App() {
 
   const fetchInitialData = () => {
     setIsLoading(true)
-    fetch(`http://127.0.0.1:5000/character?name=${inputValue}&page=1`) // Fetch the first page for the initial search
+    fetch(
+      `https://rickandmorty-backend-rtvb.onrender.com/character?name=${inputValue}&page=1`
+    ) // Fetch the first page for the initial search
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -102,7 +106,7 @@ function App() {
   const fetchPaginationData = (_, pageNumber) => {
     setIsLoading(true)
     fetch(
-      `http://127.0.0.1:5000/character?name=${encodeURIComponent(
+      `https://rickandmorty-backend-rtvb.onrender.com/character?name=${encodeURIComponent(
         inputValue
       )}&page=${encodeURIComponent(pageNumber || 1)}`
     )
@@ -131,6 +135,8 @@ function App() {
       window.scrollTo(0, document.body.scrollHeight)
     }
   }, [characters, initialSearchPerformed])
+
+  console.log(userData)
 
   return (
     <div className="container">
